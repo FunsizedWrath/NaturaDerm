@@ -20,7 +20,7 @@ CREATE TABLE conseiller(
    dateNaissanceConseiller DATE,
    telConseiller BIGINT,
    mailConseiller VARCHAR(50),
-   numSecuConseiller BIGINT NOT NULL,
+   numSecuConseiller VARCHAR NOT NULL,
    pourcentageGainVente DECIMAL(15,2) NOT NULL,
    pourcentageMarraine DECIMAL(15,2) NOT NULL,
    estMarraine TINYINT NOT NULL,

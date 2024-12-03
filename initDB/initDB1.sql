@@ -1,4 +1,9 @@
-CREATE TABLE client(
+CREATE SCHEMA vente;
+GO
+CREATE SCHEMA manager;
+GO
+
+CREATE TABLE vente.client(
    idClient INT,
    nomClient VARCHAR(50) NOT NULL,
    prenomClient VARCHAR(50) NOT NULL,
@@ -15,7 +20,7 @@ CREATE TABLE client(
    CHECK (LEN(CAST(telClient AS VARCHAR(10))) = 10)
 );
 
-CREATE TABLE conseiller(
+CREATE TABLE vente.conseiller(
    idConseiller INT,
    nomConseiller VARCHAR(50) NOT NULL,
    prenomConseiller VARCHAR(50) NOT NULL,
@@ -30,7 +35,7 @@ CREATE TABLE conseiller(
    CHECK (LEN(CAST(telConseiller AS VARCHAR(10))) = 10)
 );
 
-CREATE TABLE fournisseur(
+CREATE TABLE manager.fournisseur(
    idFournisseur INT,
    nomFournisseur VARCHAR(50) NOT NULL,
    paysFournisseur VARCHAR(50) NOT NULL,
@@ -45,7 +50,7 @@ CREATE TABLE fournisseur(
    CHECK (LEN(CAST(telFournisseur AS VARCHAR(10))) = 10)
 );
 
-CREATE TABLE produit(
+CREATE TABLE vente.produit(
    referenceProduit VARCHAR(50),
    nomProduit VARCHAR(50) NOT NULL,
    prixHorsTaxeProduit Money NOT NULL,
@@ -59,7 +64,7 @@ CREATE TABLE produit(
    FOREIGN KEY(idFournisseur) REFERENCES fournisseur(idFournisseur)
 );
 
-CREATE TABLE manager(
+CREATE TABLE manager.manager(
    idManager INT,
    nomManager VARCHAR(50) NOT NULL,
    prenomManager VARCHAR(50) NOT NULL,
@@ -67,7 +72,7 @@ CREATE TABLE manager(
    PRIMARY KEY(idManager)
 );
 
-CREATE TABLE commande(
+CREATE TABLE vente.commande(
    idCommande INT,
    remiseCommande Money,
    dateCommande DATE,
@@ -82,7 +87,7 @@ CREATE TABLE commande(
    FOREIGN KEY(idClient) REFERENCES client(idClient)
 );
 
-CREATE TABLE composant(
+CREATE TABLE vente.composant(
    idComposant INT,
    nomComposant VARCHAR(50) NOT NULL,
    estAllergene BIT NOT NULL,
@@ -90,7 +95,7 @@ CREATE TABLE composant(
    UNIQUE(nomComposant)
 );
 
-CREATE TABLE reunionClient(
+CREATE TABLE vente.reunionClient(
    idClient INT,
    idConseiller INT,
    idReunion INT NOT NULL,
@@ -101,7 +106,7 @@ CREATE TABLE reunionClient(
    FOREIGN KEY(idConseiller) REFERENCES conseiller(idConseiller)
 );
 
-CREATE TABLE formationConseiller(
+CREATE TABLE vente.formationConseiller(
    idConseiller INT,
    idConseiller_1 INT,
    idFormation INT NOT NULL,
@@ -112,7 +117,7 @@ CREATE TABLE formationConseiller(
    FOREIGN KEY(idConseiller_1) REFERENCES conseiller(idConseiller)
 );
 
-CREATE TABLE estCommande(
+CREATE TABLE vente.estCommande(
    referenceProduit VARCHAR(50),
    idCommande INT,
    quantiteProduit INT NOT NULL,
@@ -121,7 +126,7 @@ CREATE TABLE estCommande(
    FOREIGN KEY(idCommande) REFERENCES commande(idCommande)
 );
 
-CREATE TABLE compose(
+CREATE TABLE vente.compose(
    referenceProduit VARCHAR(50),
    idComposant INT,
    PRIMARY KEY(referenceProduit, idComposant),

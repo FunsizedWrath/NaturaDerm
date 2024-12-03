@@ -4,13 +4,15 @@ CREATE TABLE client(
    prenomClient VARCHAR(50) NOT NULL,
    dateNaissanceClient DATE,
    sexeClient INT,
-   telClient BIGINT,
-   mailClient VARCHAR(50),
+   telClient BIGINT NOT NULL,
+   mailClient VARCHAR(50) NOT NULL,
    adresse1Client VARCHAR(50) NOT NULL,
    adresse2Client VARCHAR(50) NOT NULL,
    codePostalClient INT NOT NULL,
    villeClient VARCHAR(50) NOT NULL,
-   PRIMARY KEY(idClient)
+   PRIMARY KEY(idClient),
+   CHECK (sexeClient = 0 OR sexeClient = 1 OR sexeClient = 2),
+   CHECK (LEN(CAST(telClient AS VARCHAR(10))) = 10)
 );
 
 CREATE TABLE conseiller(
@@ -24,7 +26,8 @@ CREATE TABLE conseiller(
    pourcentageGainVente DECIMAL(15,2) NOT NULL,
    pourcentageMarraine DECIMAL(15,2) NOT NULL,
    estMarraine TINYINT NOT NULL,
-   PRIMARY KEY(idConseiller)
+   PRIMARY KEY(idConseiller),
+   CHECK (LEN(CAST(telConseiller AS VARCHAR(10))) = 10)
 );
 
 CREATE TABLE fournisseur(
@@ -38,7 +41,8 @@ CREATE TABLE fournisseur(
    telFournisseur BIGINT,
    mailFournisseur VARCHAR(50),
    numSIRETFournisseur BIGINT,
-   PRIMARY KEY(idFournisseur)
+   PRIMARY KEY(idFournisseur),
+   CHECK (LEN(CAST(telFournisseur AS VARCHAR(10))) = 10)
 );
 
 CREATE TABLE produit(
@@ -48,7 +52,7 @@ CREATE TABLE produit(
    descriptionProduit VARCHAR(50),
    imgProduit VARCHAR(50),
    pictogrammeProduit VARCHAR(50),
-   discontinuerProduit TINYINT NOT NULL,
+   discontinuerProduit BIT DEFAULT 0,
    quantiteStockProduit INT,
    idFournisseur INT NOT NULL,
    PRIMARY KEY(referenceProduit),
@@ -59,7 +63,7 @@ CREATE TABLE manager(
    idManager INT,
    nomManager VARCHAR(50) NOT NULL,
    prenomManager VARCHAR(50) NOT NULL,
-   estDirecteur TINYINT,
+   estDirecteur BIT DEFAULT 0,
    PRIMARY KEY(idManager)
 );
 
@@ -81,7 +85,7 @@ CREATE TABLE commande(
 CREATE TABLE composant(
    idComposant INT,
    nomComposant VARCHAR(50) NOT NULL,
-   estAllergene TINYINT NOT NULL,
+   estAllergene BIT NOT NULL,
    PRIMARY KEY(idComposant),
    UNIQUE(nomComposant)
 );

@@ -32,14 +32,14 @@ CREATE TABLE conseiller(
    nomConseiller VARCHAR(50) NOT NULL,
    prenomConseiller VARCHAR(50) NOT NULL,
    dateNaissanceConseiller DATE,
-   telConseiller BIGINT,
+   telConseiller VARCHAR(10),
    mailConseiller VARCHAR(50),
    numSecuConseiller VARCHAR(50) NOT NULL,
    pourcentageGainVente DECIMAL(15,2) NOT NULL,
    pourcentageMarraine DECIMAL(15,2) NOT NULL,
    estMarraine TINYINT NOT NULL,
    PRIMARY KEY(idConseiller),
-   CHECK (LEN(CAST(telConseiller AS VARCHAR(10))) = 10)
+   CHECK (LEN(telConseiller) = 10)
 );
 
 CREATE TABLE fournisseur(

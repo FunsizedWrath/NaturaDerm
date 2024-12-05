@@ -52,32 +52,32 @@ INSERT INTO client (
 INSERT INTO conseiller (
     idConseiller, nomConseiller, prenomConseiller, dateNaissanceConseiller, telConseiller, mailConseiller, numSecuConseiller, pourcentageGainVente, pourcentageMarraine, estMarraine
 ) VALUES
-    (1, 'Odinson', 'Thor', '1985-04-12', 0601123456, 'thor.odinson@asgard.com', '1234567890123', 12.50, 0, 1),
-    (2, 'Laufeyson', 'Loki', '1987-08-21', 0602234567, 'loki.laufeyson@asgard.com', '2345678901234', 10.00, 0, 0),
-    (3, 'Freyson', 'Freyr', '1990-05-15', 0603345678, 'freyr.freyson@vanaheim.com', '3456789012345', 11.75, 7.25, 1),
-    (4, 'Njordson', 'Njord', '1975-09-30', 0604456789, 'njord.njordson@vanaheim.com', '4567890123456', 13.00, 9.00, 1),
-    (5, 'Odinsdottir', 'Frigg', '1982-02-18', 0605567890, 'frigg.odinsdottir@asgard.com', '5678901234567', 12.00, 8.75, 1),
-    (6, 'Hreidmarson', 'Odin', '1960-11-11', 0606678901, 'odin.hreidmarson@asgard.com', '6789012345678', 15.00, 9.50, 1),
-    (7, 'Jotundottir', 'Angrboda', '1989-06-09', 0607789012, 'angrboda.jotundottir@jotunheim.com', '7890123456789', 9.75, 5.75, 0),
-    (8, 'Freyjadottir', 'Freyja', '1992-12-05', 0608890123, 'freyja.freyjadottir@vanaheim.com', '8901234567890', 14.25, 10.25, 1),
-    (9, 'Yggdrasilson', 'Vidar', '1984-03-18', 0609901234, 'vidar.yggdrasilson@asgard.com', '9012345678901', 10.50, 6.75, 0),
-    (10, 'Odinsdottir', 'Hel', '1986-10-30', 0610012345, 'hel.odinsdottir@helheim.com', '1123456789012', 11.00, 7.00, 0),
-    (11, 'Tyrson', 'Tyr', '1983-08-12', 0611123456, 'tyr.tyrson@asgard.com', '2234567890123', 13.75, 9.25, 1),
-    (12, 'Baldrson', 'Baldr', '1987-05-27', 0612234567, 'baldr.baldrson@asgard.com', '3345678901234', 12.50, 8.00, 1),
-    (13, 'Hymirson', 'Thorolf', '1980-02-25', 0613345678, 'thorolf.hymirson@midgard.com', '4456789012345', 11.25, 7.50, 0),
-    (14, 'Fenrirson', 'Fenrir', '1993-04-17', 0614456789, 'fenrir.fenrirson@jotunheim.com', '5567890123456', 9.50, 5.50, 0),
-    (15, 'Jotundottir', 'Skadi', '1991-07-19', 0615567890, 'skadi.jotundottir@jotunheim.com', '6678901234567', 10.75, 6.25, 1),
-    (16, 'Bragason', 'Bragi', '1985-09-25', 0616678901, 'bragi.bragason@asgard.com', '7789012345678', 13.50, 8.75, 1),
-    (17, 'Thorvaldson', 'Vili', '1988-11-07', 0617789012, 'vili.thorvaldson@asgard.com', '8890123456789', 12.00, 0, 0),
-    (18, 'Veidottir', 'Eir', '1981-10-02', 0618890123, 'eir.veidottir@asgard.com', '9901234567890', 14.00, 9.75, 1),
-    (19, 'Heimdallson', 'Heimdall', '1983-12-12', 0619901234, 'heimdall.heimdallson@asgard.com', '1012345678901', 10.25, 6.50, 0),
-    (20, 'Gullveigsdottir', 'Gullveig', '1978-01-29', 0620012345, 'gullveig.gullveigsdottir@vanaheim.com', '2123456789012', 15.50, 10.50, 1);
+    (1, 'Odinson', 'Thor', '1985-04-12', '0601123456', 'thor.odinson@asgard.com', '1234567890123', 12.50, 0, 1),
+    (2, 'Laufeyson', 'Loki', '1987-08-21', '0602234567', 'loki.laufeyson@asgard.com', '2345678901234', 10.00, 0, 0),
+    (3, 'Freyson', 'Freyr', '1990-05-15', '0603345678', 'freyr.freyson@vanaheim.com', '3456789012345', 11.75, 7.25, 1),
+    (4, 'Njordson', 'Njord', '1975-09-30', '0604456789', 'njord.njordson@vanaheim.com', '4567890123456', 13.00, 9.00, 1),
+    (5, 'Odinsdottir', 'Frigg', '1982-02-18', '0605567890', 'frigg.odinsdottir@asgard.com', '5678901234567', 12.00, 8.75, 1),
+    (6, 'Hreidmarson', 'Odin', '1960-11-11', '0606678901', 'odin.hreidmarson@asgard.com', '6789012345678', 15.00, 9.50, 1),
+    (7, 'Jotundottir', 'Angrboda', '1989-06-09', '0607789012', 'angrboda.jotundottir@jotunheim.com', '7890123456789', 9.75, 5.75, 0),
+    (8, 'Freyjadottir', 'Freyja', '1992-12-05', '0608890123', 'freyja.freyjadottir@vanaheim.com', '8901234567890', 14.25, 10.25, 1),
+    (9, 'Yggdrasilson', 'Vidar', '1984-03-18', '0609901234', 'vidar.yggdrasilson@asgard.com', '9012345678901', 10.50, 6.75, 0),
+    (10, 'Odinsdottir', 'Hel', '1986-10-30', '0610012345', 'hel.odinsdottir@helheim.com', '1123456789012', 11.00, 7.00, 0),
+    (11, 'Tyrson', 'Tyr', '1983-08-12', '0611123456', 'tyr.tyrson@asgard.com', '2234567890123', 13.75, 9.25, 1),
+    (12, 'Baldrson', 'Baldr', '1987-05-27', '0612234567', 'baldr.baldrson@asgard.com', '3345678901234', 12.50, 8.00, 1),
+    (13, 'Hymirson', 'Thorolf', '1980-02-25', '0613345678', 'thorolf.hymirson@midgard.com', '4456789012345', 11.25, 7.50, 0),
+    (14, 'Fenrirson', 'Fenrir', '1993-04-17', '0614456789', 'fenrir.fenrirson@jotunheim.com', '5567890123456', 9.50, 5.50, 0),
+    (15, 'Jotundottir', 'Skadi', '1991-07-19', '0615567890', 'skadi.jotundottir@jotunheim.com', '6678901234567', 10.75, 6.25, 1),
+    (16, 'Bragason', 'Bragi', '1985-09-25', '0616678901', 'bragi.bragason@asgard.com', '7789012345678', 13.50, 8.75, 1),
+    (17, 'Thorvaldson', 'Vili', '1988-11-07', '0617789012', 'vili.thorvaldson@asgard.com', '8890123456789', 12.00, 0, 0),
+    (18, 'Veidottir', 'Eir', '1981-10-02', '0618890123', 'eir.veidottir@asgard.com', '9901234567890', 14.00, 9.75, 1),
+    (19, 'Heimdallson', 'Heimdall', '1983-12-12', '0619901234', 'heimdall.heimdallson@asgard.com', '1012345678901', 10.25, 6.50, 0),
+    (20, 'Gullveigsdottir', 'Gullveig', '1978-01-29', '0620012345', 'gullveig.gullveigsdottir@vanaheim.com', '2123456789012', 15.50, 10.50, 1);
 
 INSERT INTO fournisseur (
     idFournisseur, nomFournisseur, paysFournisseur, adresse1Fournisseur, adresse2Fournisseur, CPFournisseur, villeFournisseur, telFournisseur, mailFournisseur, numSIRETFournisseur
 ) VALUES
-    (1, 'DreamtimeImports', 'Australie', '14 Bushland Road', 'Quartier des Esprits', 2000, 'Sydney', 612345678, 'contact@dreamtimeimports.au', 12345678901234),
-    (2, 'SouthernCrossSupplies', 'Australie', '88 Outback Lane', 'Centre Australis', 3000, 'Melbourne', 623456789, 'service@southerncrosssupplies.au', 23456789012345);
+    (1, 'DreamtimeImports', 'Australie', '14 Bushland Road', 'Quartier des Esprits', 2000, 'Sydney', 6123456781, 'contact@dreamtimeimports.au', 12345678901234),
+    (2, 'SouthernCrossSupplies', 'Australie', '88 Outback Lane', 'Centre Australis', 3000, 'Melbourne', 6234567849, 'service@southerncrosssupplies.au', 23456789012345);
 
 INSERT INTO produit (
     referenceProduit, nomProduit, prixHorsTaxeProduit, descriptionProduit, imgProduit, pictogrammeProduit, discontinuerProduit, quantiteStockProduit, idFournisseur

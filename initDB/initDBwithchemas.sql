@@ -27,7 +27,7 @@ CREATE TABLE vente.conseiller(
    dateNaissanceConseiller DATE,
    telConseiller BIGINT,
    mailConseiller VARCHAR(50),
-   numSecuConseiller VARCHAR NOT NULL,
+   numSecuConseiller VARCHAR(50) NOT NULL,
    pourcentageGainVente DECIMAL(15,2) NOT NULL,
    pourcentageMarraine DECIMAL(15,2) NOT NULL,
    estMarraine TINYINT NOT NULL,

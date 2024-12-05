@@ -9,7 +9,7 @@ CREATE TABLE vente.client(
    prenomClient VARCHAR(50) NOT NULL,
    dateNaissanceClient DATE,
    sexeClient INT,
-   telClient BIGINT NOT NULL,
+   telClient VARCHAR(10) NOT NULL,
    mailClient VARCHAR(50) NOT NULL,
    adresse1Client VARCHAR(50) NOT NULL,
    adresse2Client VARCHAR(50) NOT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE vente.client(
    villeClient VARCHAR(50) NOT NULL,
    PRIMARY KEY(idClient),
    CHECK (sexeClient = 0 OR sexeClient = 1 OR sexeClient = 2),
-   CHECK (LEN(CAST(telClient AS VARCHAR(10))) = 10)
+   CHECK (LEN(telClient) = 10)
 );
 
 CREATE TABLE vente.conseiller(
@@ -25,14 +25,14 @@ CREATE TABLE vente.conseiller(
    nomConseiller VARCHAR(50) NOT NULL,
    prenomConseiller VARCHAR(50) NOT NULL,
    dateNaissanceConseiller DATE,
-   telConseiller BIGINT,
+   telConseiller VARCHAR(10),
    mailConseiller VARCHAR(50),
    numSecuConseiller VARCHAR(50) NOT NULL,
    pourcentageGainVente DECIMAL(15,2) NOT NULL,
    pourcentageMarraine DECIMAL(15,2) NOT NULL,
    estMarraine TINYINT NOT NULL,
    PRIMARY KEY(idConseiller),
-   CHECK (LEN(CAST(telConseiller AS VARCHAR(10))) = 10)
+   CHECK (LEN(telConseiller) = 10)
 );
 
 CREATE TABLE manager.fournisseur(
@@ -43,11 +43,11 @@ CREATE TABLE manager.fournisseur(
    adresse2Fournisseur VARCHAR(50),
    CPFournisseur INT,
    villeFournisseur VARCHAR(50),
-   telFournisseur BIGINT,
+   telFournisseur VARCHAR(10),
    mailFournisseur VARCHAR(50),
    numSIRETFournisseur BIGINT,
    PRIMARY KEY(idFournisseur),
-   CHECK (LEN(CAST(telFournisseur AS VARCHAR(10))) = 10)
+   CHECK (LEN(telFournisseur) = 10)
 );
 
 CREATE TABLE vente.produit(

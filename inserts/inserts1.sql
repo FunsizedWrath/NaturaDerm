@@ -1,4 +1,3 @@
-
 INSERT INTO client (
     idClient, nomClient, prenomClient, dateNaissanceClient, sexeClient, telClient, mailClient, adresse1Client, adresse2Client, codePostalClient, villeClient
 ) VALUES
@@ -140,6 +139,8 @@ INSERT INTO composant (
     (28, 'Souffle du Vent du Nord', 0),
     (29, 'Ombre de la Nuit Étoilée', 0),
     (30, 'Perle des Profondeurs', 1);
+
+GO
 
 INSERT INTO compose (
     referenceProduit, idComposant

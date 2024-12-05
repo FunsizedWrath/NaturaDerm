@@ -1,3 +1,15 @@
+DROP TABLE IF EXISTS compose;
+DROP TABLE IF EXISTS estCommande;
+DROP TABLE IF EXISTS formationConseiller;
+DROP TABLE IF EXISTS reunionClient;
+DROP TABLE IF EXISTS composant;
+DROP TABLE IF EXISTS commande;
+DROP TABLE IF EXISTS manager;
+DROP TABLE IF EXISTS produit;
+DROP TABLE IF EXISTS fournisseur;
+DROP TABLE IF EXISTS conseiller;
+DROP TABLE IF EXISTS client;
+
 CREATE TABLE client(
    idClient INT,
    nomClient VARCHAR(50) NOT NULL,
@@ -22,7 +34,7 @@ CREATE TABLE conseiller(
    dateNaissanceConseiller DATE,
    telConseiller BIGINT,
    mailConseiller VARCHAR(50),
-   numSecuConseiller VARCHAR NOT NULL,
+   numSecuConseiller VARCHAR(50) NOT NULL,
    pourcentageGainVente DECIMAL(15,2) NOT NULL,
    pourcentageMarraine DECIMAL(15,2) NOT NULL,
    estMarraine TINYINT NOT NULL,

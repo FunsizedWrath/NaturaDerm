@@ -25,8 +25,6 @@ WHERE V.ID_VEHICULE IS NULL
 
 ----------
 
-group BY
-having
-not in
+
 sous requete
 min/max

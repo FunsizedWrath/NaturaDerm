@@ -26,5 +26,5 @@ WHERE V.ID_VEHICULE IS NULL
 ----------
 
 
-sous requete
-min/max
+-- sous requete
+-- min/max

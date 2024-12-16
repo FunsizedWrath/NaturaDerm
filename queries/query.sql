@@ -1,4 +1,4 @@
-INSERT INTO vente.commande (idCommande, remiseCommande, dateCommande, dateLivraisonCommande, PrixTotalCommande, idManager, idConseiller, idClient)
+INSERT INTO commande (idCommande, remiseCommande, dateCommande, dateLivraisonCommande, PrixTotalCommande, idManager, idConseiller, idClient)
 VALUES
 (1, 10.50, '2024-12-01', '2024-12-10', 150.00, null, 5, 1),
 (2, 5.00, '2024-11-20', '2024-11-25', 200.00, null, 4, 2),
@@ -7,7 +7,7 @@ VALUES
 (5, 0.00, '2024-12-04', NULL, 100.00, 1, NULL, 5);
 
 
-INSERT into vente.reunionClient (idclient, idconseiller, idreunion, datereunion)
+INSERT into reunionClient (idclient, idconseiller, idreunion, datereunion)
 values
 (1,2,1,'2024-10-12'),
 (5,2,2,'2024-10-12'),
@@ -27,8 +27,8 @@ AND estMarraine IS NOT NULL;
 
 
 SELECT conseiller.nomConseiller, SUM(commande.PrixTotalCommande) AS TotalCommandes
-FROM dbo.commande
-JOIN dbo.conseiller
+FROM commande
+JOIN conseiller
 ON commande.idConseiller = conseiller.idConseiller
 GROUP BY conseiller.nomConseiller
 ORDER by TotalCommandes DESC;

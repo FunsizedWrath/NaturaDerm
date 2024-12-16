@@ -24,7 +24,10 @@ CREATE TABLE client(
    villeClient VARCHAR(50) NOT NULL,
    PRIMARY KEY(idClient),
    CHECK (sexeClient = 0 OR sexeClient = 1 OR sexeClient = 2),
-   CHECK (LEN(CAST(telClient AS VARCHAR(10))) = 10)
+   CHECK (LEN(CAST(telClient AS VARCHAR(10))) = 10),
+   CHECK (LEN(mailClient) >= 5), -- 4 car il faut au moins trois charactere un @ et un point ex: a@b.c
+   CHECK (LEN(adresse1Client) > 0),
+   CHECK (LEN(adresse2Client) > 0),
 );
 
 CREATE TABLE conseiller(
@@ -39,7 +42,9 @@ CREATE TABLE conseiller(
    pourcentageMarraine DECIMAL(15,2) NOT NULL,
    estMarraine TINYINT NOT NULL,
    PRIMARY KEY(idConseiller),
-   CHECK (LEN(telConseiller) = 10)
+   CHECK (LEN(telConseiller) = 10),
+   CHECK (pourcentageGainVente >= 0 AND pourcentageGainVente <= 100),
+   CHECK (pourcentageMarraine >= 0 AND pourcentageMarraine <= 100)
 );
 
 CREATE TABLE fournisseur(
@@ -68,7 +73,9 @@ CREATE TABLE produit(
    quantiteStockProduit INT,
    idFournisseur INT NOT NULL,
    PRIMARY KEY(referenceProduit),
-   FOREIGN KEY(idFournisseur) REFERENCES fournisseur(idFournisseur)
+   FOREIGN KEY(idFournisseur) REFERENCES fournisseur(idFournisseur),
+   CHECK (prixHorsTaxeProduit > 0),
+   CHECK (quantiteStockProduit >= 0)
 );
 
 CREATE TABLE manager(
@@ -91,13 +98,15 @@ CREATE TABLE commande(
    PRIMARY KEY(idCommande),
    FOREIGN KEY(idManager) REFERENCES manager(idManager),
    FOREIGN KEY(idConseiller) REFERENCES conseiller(idConseiller),
-   FOREIGN KEY(idClient) REFERENCES client(idClient)
+   FOREIGN KEY(idClient) REFERENCES client(idClient),
+   CHECK (remiseCommande >= 0),
+   CHECK (PrixTotalCommande > 0)
 );
 
 CREATE TABLE composant(
    idComposant INT,
    nomComposant VARCHAR(50) NOT NULL,
-   estAllergene BIT NOT NULL,
+   estAllergene BIT NOT NULL DEFAULT 0,
    PRIMARY KEY(idComposant),
    UNIQUE(nomComposant)
 );
@@ -130,7 +139,8 @@ CREATE TABLE estCommande(
    quantiteProduit INT NOT NULL,
    PRIMARY KEY(referenceProduit, idCommande),
    FOREIGN KEY(referenceProduit) REFERENCES produit(referenceProduit),
-   FOREIGN KEY(idCommande) REFERENCES commande(idCommande)
+   FOREIGN KEY(idCommande) REFERENCES commande(idCommande),
+   CHECK (quantiteProduit > 0)
 );
 
 CREATE TABLE compose(

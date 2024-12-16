@@ -1,71 +1,188 @@
--- Vue pour les conseillers
-CREATE VIEW vw_ConseillerClients AS
-SELECT c.idClient, c.nomClient, c.prenomClient, c.dateNaissanceClient, c.sexeClient, c.telClient, c.mailClient
+-- 1. Vue pour les Conseillers
+CREATE OR ALTER VIEW vw_ConseillerClients AS
+SELECT DISTINCT 
+    c.idClient, 
+    c.nomClient, 
+    c.prenomClient, 
+    c.dateNaissanceClient, 
+    c.sexeClient, 
+    c.telClient, 
+    c.mailClient
 FROM dbo.client c
-JOIN dbo.conseiller con ON c.idConseiller = con.idConseiller
-WHERE con.idConseiller = SESSION_USER; -- Utilisation de SESSION_USER pour restreindre dynamiquement
-GO
+JOIN dbo.reunionClient rc ON c.idClient = rc.idClient
+JOIN dbo.conseiller con ON rc.idConseiller = con.idConseiller
+WHERE LOWER(con.prenomConseiller + con.nomConseiller) = LOWER(SESSION_USER); -- Comparaison case-insensitive
 
--- Permissions pour insérer des données dans commande et formationConseiller
-GRANT INSERT ON dbo.commande TO CONSEILLER_ROLE;
-GRANT INSERT ON dbo.formationConseiller TO CONSEILLER_ROLE;
+-- Permissions pour les Conseillers
+GRANT SELECT ON vw_ConseillerClients TO Conseiller;
+GRANT INSERT ON dbo.commande TO Conseiller;
+GRANT INSERT ON dbo.formationConseiller TO Conseiller;
 
-
--- Vue pour les marraines
-CREATE VIEW vw_MarraineConseillers AS
-SELECT con.idConseiller, con.nomConseiller, con.prenomConseiller, con.dateNaissanceConseiller, con.telConseiller, con.mailConseiller
+-- 2. Vue pour les Marraines
+CREATE OR ALTER VIEW vw_MarraineConseillers AS
+SELECT DISTINCT 
+    con.idConseiller, 
+    con.nomConseiller, 
+    con.prenomConseiller, 
+    con.dateNaissanceConseiller, 
+    con.telConseiller, 
+    con.mailConseiller
 FROM dbo.conseiller con
-WHERE con.idMarraine = SESSION_USER; -- Restreindre dynamiquement aux conseillers sous la marraine
-GO
+WHERE con.estMarraine = 1
+  AND con.idConseiller IN (
+      SELECT idConseiller 
+      FROM dbo.conseiller 
+      WHERE LOWER(prenomConseiller + nomConseiller) = LOWER(SESSION_USER) -- Comparaison case-insensitive
+  );
 
--- Permissions pour insérer des données dans commande et formationConseiller
-GRANT INSERT ON dbo.commande TO MARRAINE_ROLE;
-GRANT INSERT ON dbo.formationConseiller TO MARRAINE_ROLE;
+-- Permissions pour les Marraines
+CREATE ROLE Marraine
+GRANT SELECT ON vw_MarraineConseillers TO Marraine;
+GRANT INSERT ON dbo.commande TO Marraine;
+GRANT INSERT ON dbo.formationConseiller TO Marraine;
+
+-- 3. Vue pour le Directeur
+CREATE OR ALTER VIEW vw_DirectorAccess AS
+SELECT 
+    'client' AS TableName, 
+    CAST(idClient AS NVARCHAR(50)) AS EntityID, 
+    nomClient AS Column1, 
+    prenomClient AS Column2, 
+    mailClient AS Column3, 
+    telClient AS Column4
+FROM dbo.client
+UNION ALL
+SELECT 
+    'conseiller' AS TableName, 
+    CAST(idConseiller AS NVARCHAR(50)) AS EntityID, 
+    nomConseiller AS Column1, 
+    prenomConseiller AS Column2, 
+    mailConseiller AS Column3, 
+    telConseiller AS Column4
+FROM dbo.conseiller
+UNION ALL
+SELECT 
+    'produit' AS TableName, 
+    referenceProduit AS EntityID, 
+    nomProduit AS Column1, 
+    descriptionProduit AS Column2, 
+    CAST(prixHorsTaxeProduit AS NVARCHAR(50)) AS Column3, 
+    NULL AS Column4
+FROM dbo.produit
+UNION ALL
+SELECT 
+    'reunionClient' AS TableName, 
+    CAST(idReunion AS NVARCHAR(50)) AS EntityID, 
+    CAST(dateReunion AS NVARCHAR(50)) AS Column1, 
+    NULL AS Column2, 
+    NULL AS Column3, 
+    NULL AS Column4
+FROM dbo.reunionClient
+UNION ALL
+SELECT 
+    'commande' AS TableName, 
+    CAST(idCommande AS NVARCHAR(50)) AS EntityID, 
+    CAST(dateCommande AS NVARCHAR(50)) AS Column1, 
+    CAST(PrixTotalCommande AS NVARCHAR(50)) AS Column2, 
+    NULL AS Column3, 
+    NULL AS Column4
+FROM dbo.commande
+UNION ALL
+SELECT 
+    'formationConseiller' AS TableName, 
+    CAST(idFormation AS NVARCHAR(50)) AS EntityID, 
+    CAST(dateFormation AS NVARCHAR(50)) AS Column1, 
+    NULL AS Column2, 
+    NULL AS Column3, 
+    NULL AS Column4
+FROM dbo.formationConseiller;
 
 
--- Vue pour le directeur
-CREATE VIEW vw_DirectorAccess AS
-SELECT * FROM dbo.client
-UNION ALL
-SELECT * FROM dbo.conseiller
-UNION ALL
-SELECT * FROM dbo.fournisseur
-UNION ALL
-SELECT * FROM dbo.produit
-UNION ALL
-SELECT * FROM dbo.commande
-UNION ALL
-SELECT * FROM dbo.formationConseiller;
-GO
 
--- Permissions pour insérer et supprimer dans toutes les tables
-GRANT INSERT, DELETE ON dbo.client TO DIRECTOR_ROLE;
-GRANT INSERT, DELETE ON dbo.conseiller TO DIRECTOR_ROLE;
-GRANT INSERT, DELETE ON dbo.fournisseur TO DIRECTOR_ROLE;
-GRANT INSERT, DELETE ON dbo.produit TO DIRECTOR_ROLE;
-GRANT INSERT, DELETE ON dbo.commande TO DIRECTOR_ROLE;
-GRANT INSERT, DELETE ON dbo.formationConseiller TO DIRECTOR_ROLE;
+-- Permissions pour le Directeur
+GRANT SELECT, INSERT, UPDATE, DELETE ON dbo.client TO Manager;
+GRANT SELECT, INSERT, UPDATE, DELETE ON dbo.conseiller TO Manager;
+GRANT SELECT, INSERT, UPDATE, DELETE ON dbo.reunionClient TO Manager;
+GRANT SELECT, INSERT, UPDATE, DELETE ON dbo.produit TO Manager;
+GRANT SELECT, INSERT, UPDATE, DELETE ON dbo.commande TO Manager;
+GRANT SELECT, INSERT, UPDATE, DELETE ON dbo.formationConseiller TO Manager;
+
+-- 4. Vue pour l’Admin
+CREATE OR ALTER VIEW vw_AdminAccess AS
+SELECT 
+    'client' AS TableName, 
+    CAST(idClient AS NVARCHAR(50)) AS EntityID, 
+    nomClient AS Column1, 
+    prenomClient AS Column2, 
+    mailClient AS Column3, 
+    telClient AS Column4
+FROM dbo.client
+
+UNION ALL
+
+SELECT 
+    'conseiller' AS TableName, 
+    CAST(idConseiller AS NVARCHAR(50)) AS EntityID, 
+    nomConseiller AS Column1, 
+    prenomConseiller AS Column2, 
+    mailConseiller AS Column3, 
+    telConseiller AS Column4
+FROM dbo.conseiller
+
+UNION ALL
+
+SELECT 
+    'reunionClient' AS TableName, 
+    CAST(idReunion AS NVARCHAR(50)) AS EntityID, 
+    CAST(dateReunion AS NVARCHAR(50)) AS Column1, 
+    NULL AS Column2, 
+    NULL AS Column3, 
+    NULL AS Column4
+FROM dbo.reunionClient
+
+UNION ALL
+
+SELECT 
+    'produit' AS TableName, 
+    referenceProduit AS EntityID, 
+    nomProduit AS Column1, 
+    descriptionProduit AS Column2, 
+    CAST(prixHorsTaxeProduit AS NVARCHAR(50)) AS Column3, 
+    NULL AS Column4
+FROM dbo.produit
+
+UNION ALL
+
+SELECT 
+    'commande' AS TableName, 
+    CAST(idCommande AS NVARCHAR(50)) AS EntityID, 
+    CAST(dateCommande AS NVARCHAR(50)) AS Column1, 
+    CAST(PrixTotalCommande AS NVARCHAR(50)) AS Column2, 
+    NULL AS Column3, 
+    NULL AS Column4
+FROM dbo.commande
+
+UNION ALL
+
+SELECT 
+    'formationConseiller' AS TableName, 
+    CAST(idFormation AS NVARCHAR(50)) AS EntityID, 
+    CAST(dateFormation AS NVARCHAR(50)) AS Column1, 
+    NULL AS Column2, 
+    NULL AS Column3, 
+    NULL AS Column4
+FROM dbo.formationConseiller;
 
 
--- Vue pour l'admin
-CREATE VIEW vw_AdminAccess AS
-SELECT * FROM dbo.client
-UNION ALL
-SELECT * FROM dbo.conseiller
-UNION ALL
-SELECT * FROM dbo.fournisseur
-UNION ALL
-SELECT * FROM dbo.produit
-UNION ALL
-SELECT * FROM dbo.commande
-UNION ALL
-SELECT * FROM dbo.formationConseiller;
-GO
+-- Permissions pour l’Admin
+CREATE ROLE AdminSystem
+GRANT CONTROL ON SCHEMA::dbo TO AdminSystem;
+GRANT ALTER ANY USER TO AdminSystem;
+GRANT ALTER ANY ROLE TO AdminSystem;
+GRANT SELECT, INSERT, UPDATE, DELETE ON dbo.client TO AdminSystem;
+GRANT SELECT, INSERT, UPDATE, DELETE ON dbo.conseiller TO AdminSystem;
+GRANT SELECT, INSERT, UPDATE, DELETE ON dbo.reunionClient TO AdminSystem;
+GRANT SELECT, INSERT, UPDATE, DELETE ON dbo.produit TO AdminSystem;
+GRANT SELECT, INSERT, UPDATE, DELETE ON dbo.commande TO AdminSystem;
+GRANT SELECT, INSERT, UPDATE, DELETE ON dbo.formationConseiller TO AdminSystem;
 
--- Permissions complètes pour l'admin
-GRANT SELECT, INSERT, UPDATE, DELETE ON dbo.client TO ADMIN_ROLE;
-GRANT SELECT, INSERT, UPDATE, DELETE ON dbo.conseiller TO ADMIN_ROLE;
-GRANT SELECT, INSERT, UPDATE, DELETE ON dbo.fournisseur TO ADMIN_ROLE;
-GRANT SELECT, INSERT, UPDATE, DELETE ON dbo.produit TO ADMIN_ROLE;
-GRANT SELECT, INSERT, UPDATE, DELETE ON dbo.commande TO ADMIN_ROLE;
-GRANT SELECT, INSERT, UPDATE, DELETE ON dbo.formationConseiller TO ADMIN_ROLE;

@@ -10,18 +10,18 @@ BEGIN
     SET NOCOUNT ON;
 
     -- Vérifie si le produit existe
-    IF EXISTS (SELECT 1 FROM dbo.produit WHERE referenceProduit = @ProductID)
+    IF EXISTS (SELECT 1 FROM produit WHERE referenceProduit = @ProductID)
     BEGIN
         -- Mise à jour de la quantité en stock
         IF @IsRestock = 1
         BEGIN
-            UPDATE dbo.produit
+            UPDATE produit
             SET quantiteStockProduit = quantiteStockProduit + @QuantityChange
             WHERE referenceProduit = @ProductID;
         END
         ELSE
         BEGIN
-            UPDATE dbo.produit
+            UPDATE produit
             SET quantiteStockProduit = quantiteStockProduit - @QuantityChange
             WHERE referenceProduit = @ProductID;
 
@@ -51,25 +51,25 @@ BEGIN
     IF @GroupBy = 'conseiller'
     BEGIN
         SELECT c.idConseiller, c.nomConseiller, c.prenomConseiller, SUM(v.montant) AS TotalVentes
-        FROM dbo.vente v
-        JOIN dbo.conseiller c ON v.idConseiller = c.idConseiller
-        WHERE v.dateVente BETWEEN @StartDate AND @EndDate
+        FROM commande c
+        JOIN conseiller c ON v.idConseiller = c.idConseiller
+        WHERE c.dateCommande BETWEEN @StartDate AND @EndDate
         GROUP BY c.idConseiller, c.nomConseiller, c.prenomConseiller;
     END
     ELSE IF @GroupBy = 'client'
     BEGIN
         SELECT cl.idClient, cl.nomClient, cl.prenomClient, SUM(v.montant) AS TotalVentes
-        FROM dbo.vente v
-        JOIN dbo.client cl ON v.idClient = cl.idClient
-        WHERE v.dateVente BETWEEN @StartDate AND @EndDate
+        FROM commande c
+        JOIN client cl ON v.idClient = cl.idClient
+        WHERE c.dateCommande BETWEEN @StartDate AND @EndDate
         GROUP BY cl.idClient, cl.nomClient, cl.prenomClient;
     END
     ELSE IF @GroupBy = 'produit'
     BEGIN
         SELECT p.referenceProduit, p.nomProduit, SUM(v.quantite) AS TotalQuantiteVendue, SUM(v.montant) AS TotalVentes
-        FROM dbo.vente v
-        JOIN dbo.produit p ON v.referenceProduit = p.referenceProduit
-        WHERE v.dateVente BETWEEN @StartDate AND @EndDate
+        FROM commande c
+        JOIN produit p ON v.referenceProduit = p.referenceProduit
+        WHERE c.datecommande BETWEEN @StartDate AND @EndDate
         GROUP BY p.referenceProduit, p.nomProduit;
     END
     ELSE
